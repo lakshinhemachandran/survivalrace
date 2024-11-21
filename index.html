@@ -193,105 +193,10 @@ console.log('Init Player ysdk');
             // Additional start modules
         }
 
-        function FullAdShow() {
-            try {
-                if (nowFullAdOpen !== true && ysdk !== null) {
-                    ysdk.adv.showFullscreenAdv(
-                        {
-                            callbacks: {
-                                onOpen: () => {
-                                    console.log('Open Ad Interstitial');
-                                    nowFullAdOpen = true;
-                                    if (initGame === true) {
-                                        myGameInstance.SendMessage('YandexGame', 'OpenFullAd');
-                                    }
-                                },
-                                onClose: (wasShown) => {
-                                    nowFullAdOpen = false;
-                                    if (initGame === true) {
-                                        if (wasShown) {
-                                            myGameInstance.SendMessage('YandexGame', 'CloseFullAd', 'true');
-                                        }
-                                        else {
-                                            myGameInstance.SendMessage('YandexGame', 'CloseFullAd', 'false');
-                                        }
-                                    }
-                                    FocusGame();
-                                },
-                                onError: (error) => {
-                                    console.error('Error Ad Interstitial', error);
-                                    myGameInstance.SendMessage('YandexGame', 'ErrorFullAd');
-                                    FocusGame();
-                                }
-                            }
-                        });
-                }
-            }
-            catch (e) {
-                console.error('CRASH FullAd Show: ', e.message);
-            }
-        }
-
-        function RewardedShow(id) {
-            try {
-                ysdk.adv.showRewardedVideo(
-                    {
-                        callbacks:
-                        {
-                            onOpen: () => {
-                                console.log('Opened Video Ad. Id: ' + id);
-                                myGameInstance.SendMessage('YandexGame', 'OpenVideo');
-                            },
-                            onClose: () => {
-                                console.log('Closed Video Ad. Id: ' + id);
-                                myGameInstance.SendMessage('YandexGame', 'CloseVideo');
-                                FocusGame();
-                            },
-                            onRewarded: () => {
-                                console.log('Reward Video Ad. Id: ' + id);
-                                myGameInstance.SendMessage('YandexGame', 'RewardVideo', id);
-                            },
-                            onError: (e) => {
-                                console.error('Error Video Ad. Id: ' + id, e);
-                                myGameInstance.SendMessage('YandexGame', 'ErrorVideo');
-                            }
-                        }
-                    });
-            } catch (err) {
-                console.error('CRASH Rewarded Video Ad Show: ', err.message);
-            }
-        }
-
-        function StickyAdActivity(show) {
-            try {
-                ysdk.adv.getBannerAdvStatus().then(({ stickyAdvIsShowing, reason }) => {
-                    if (stickyAdvIsShowing) {
-                        if (!show) {
-                            ysdk.adv.hideBannerAdv();
-                        }
-                    }
-                    else if (reason) {
-                        console.log('Sticky ad are not shown. Reason:', reason);
-                    }
-                    else if (show) {
-                        ysdk.adv.showBannerAdv();
-                    }
-                })
-            } catch (e) {
-                console.error('CRASH Sticky Activity: ', e.message);
-            }
-        }
-
-        function InitLeaderboard() {
-            try {
-                ysdk.getLeaderboards().then(_lb => {
-                    leaderboard = _lb
-                    myGameInstance.SendMessage('YandexGame', 'InitializedLB');
-                });
-            } catch (e) {
-                console.error('CRASH Init Leaderboard: ', e.message);
-            }
-        }
+        function FullAdShow() { console.warn("FullAdShow is not implemented"); }
+        function RewardedShow() { console.warn("RewardedShow is not implemented"); }
+        function StickyAdActivity() { console.warn("StickyAdActivity is not implemented"); }
+        function InitLeaderboard() { console.warn("InitLeaderboards is not implemented"); }
 
         function SetLeaderboardScores(_name, score) {
             try {
@@ -604,40 +509,8 @@ function BuyPayments(id) {
     }
 }
 
-function ConsumePurchase(id) {
-    try {
-        if (payments != null) {
-            payments.getPurchases().then(purchases => {
-                for (i = 0; i < purchases.length; i++) {
-                    if (purchases[i].productID === id) {
-                        payments.consumePurchase(purchases[i].purchaseToken);
-                        myGameInstance.SendMessage('YandexGame', 'OnPurchaseSuccess', id);
-                    }
-                }
-            });
-        }
-        else console.log('Consume purchase: payments null');
-    } catch (e) {
-        console.error('CRASH Consume Purchase: ', e.message);
-    }
-}
-
-function ConsumePurchases() {
-    try {
-        if (payments != null) {
-            payments.getPurchases().then(purchases => {
-                console.log('Unprocessed purchases: ', purchases.length);
-                for (i = 0; i < purchases.length; i++) {
-                    payments.consumePurchase(purchases[i].purchaseToken);
-                    myGameInstance.SendMessage('YandexGame', 'OnPurchaseSuccess', purchases[i].productID);
-                }
-            });
-        }
-        else console.log('Consume purchases: payments null');
-    } catch (e) {
-        console.error('CRASH Consume purchases: ', e.message);
-    }
-}
+        function ConsumePurchase() { console.warn("ConsumePurchase is not implemented"); }
+        function ConsumePurchases() { console.warn("ConsumePurchases is not implemented"); }
 
 
 var environmentData = 'null';
